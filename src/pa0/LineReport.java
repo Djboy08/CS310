@@ -34,14 +34,14 @@ public class LineReport {
             }
             scanner.close();
         }catch(FileNotFoundException e){
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
 
 	// given loaded lines array, generate report on lines
 	void generateReport() {
         String format = String.format("%-6s %-40s %s", "Line", "Most Common User", "Count");
+        String f;
         System.out.println(format);
         for(int i=0; i<500; i++){
             if(lines[i] != null){
@@ -50,9 +50,11 @@ public class LineReport {
                 String username = maxUsage.getUser();
                 int count = maxUsage.getCount();
 
-                String f = String.format("%-6d %-40s %d", i+1, username, count);
-                System.out.println(f);
+                f = String.format("%-6d %-40s %d", i+1, username, count);
+            }else{
+                f = String.format("%-6d %-40s %d", i+1, "NONE", 0);
             }
+            System.out.println(f);
         }
     }
 

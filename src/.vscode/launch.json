@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch with Arguments Prompt",
+            "request": "launch",
+            "mainClass": "",
+            "args": "${command:SpecifyProgramArgs}"
+        },
+        {
+            "type": "java",
+            "name": "Launch LineReport",
+            "request": "launch",
+            "mainClass": "pa0.LineReport",
+            "projectName": "src_c3344f58"
+        },
+        {
+            "type": "java",
             "name": "Launch LineReport",
             "request": "launch",
             "mainClass": "pa0.LineReport",

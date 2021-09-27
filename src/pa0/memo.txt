@@ -1,0 +1,66 @@
+1). In my experience of writing these programs I was using ‘Visual Studio Code’ with a linux subsystem on Windows. 
+This allows me to test my code properly on a linux environment using the sub-system as well as use VS Code as my text editor. 
+I ran my programs a few times on the cs.umb.edu server to ensure that my code was at least running. 
+My overall experience programming these was pretty easy and straightforward. 
+I did not have really any issues other than getting the autograder to grade my work properly. 
+
+
+
+2).
+
+
+
+3).
+Compiling the java files: 
+
+justi@DESKTOP-FGHTBTM MINGW64 /f/Downloads/CS310/src (master)
+$ javac -d ../classes pa0/*.java
+
+
+Changing Directory and running the program:
+justi@DESKTOP-FGHTBTM MINGW64 /f/Downloads/CS310/src (master)
+$ cd ../classes
+
+justi@DESKTOP-FGHTBTM MINGW64 /f/Downloads/CS310/classes (master)
+	$ java pa0.LineReport testdata.txt
+Line   Most Common User           Count
+1      AMAZING_AGAIN                  2
+2      Test                                         1
+3      Woah                                      1
+4      AMAZING                               1
+5      NONE                                     0
+6      NONE                                     0
+7      NONE                                     0
+8      NONE                                     0
+…
+
+justi@DESKTOP-FGHTBTM MINGW64 /f/Downloads/CS310/classes (master)
+$ ls -al ..
+total 324
+drwxr-xr-x 1 justi 197609 0 Sep 26 21:23 .      
+drwxr-xr-x 1 justi 197609 0 Sep 26 21:04 ..     
+drwxr-xr-x 1 justi 197609 0 Sep 26 21:25 .git   
+drwxr-xr-x 1 justi 197609 0 Sep 26 20:36 classes
+drwxr-xr-x 1 justi 197609 0 Sep 26 22:48 src
+
+jdboy08@DESKTOP-FGHTBTM:/mnt/f/Downloads/CS310$ tree
+.
+├── classes
+│   ├── pa0
+│   │   ├── LineReport.class
+│   │   ├── LineUsage.class
+│   │   └── Usage.class
+│   └── testdata.txt
+└── src
+    ├── pa0
+    │   ├── LineReport.java
+    │   ├── LineUsage.java
+    │   ├── Usage.java
+    │   └── memo.txt
+    └── pa0.zip
+
+4 directories, 9 files
+
+
+
+

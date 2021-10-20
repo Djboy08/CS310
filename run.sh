@@ -1,0 +1,1 @@
+cd classes && java -cp .:../lib/algs4.jar pa1.BestModel $1 $2 $3 $4 $5

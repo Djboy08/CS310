@@ -7,7 +7,13 @@ I did not have really any issues other than getting the autograder to grade my w
 
 
 2).
+    For my code, the Big-O for LineReport would just be n = O(N).
+This is because the primary part where the program's time complexity
+gets bigger the input gets bigger is in the loadData. This is primarily, O(n) because
+as the input file gets bigger we need to loop through more.
 
+Meanwhile we have another loop that only goes from i=0, to i=499. This loop is constant
+so it makes everything beneath it constant as well since nothing is based on the input size.
 
 
 3).

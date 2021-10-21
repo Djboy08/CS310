@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.TreeMap;
 
 public class BestModel {
@@ -16,6 +17,32 @@ public class BestModel {
     private MarkovModel m1;
     private MarkovModel m2;
     private int k;
+
+    private class DiffModel implements Comparable<DiffModel> {
+        private String subString;
+        private double liklihood1;
+        private double liklihood2;
+        private double diff;
+        private String posORneg;
+
+        public DiffModel(String subString, double likelihood1, double likelihood2) {
+            this.subString = subString;
+            this.liklihood1 = likelihood1;
+            this.liklihood2 = likelihood2;
+            this.diff = likelihood1 - likelihood2;
+            if(this.diff < 0){
+                this.posORneg = "-";
+            }else{
+                this.posORneg = "+";
+            }
+            this.diff = Math.abs(diff);
+        }
+
+        @Override public int compareTo(DiffModel other) {
+            return Double.compare(other.diff, this.diff);
+        }
+
+    }
 
     public static HashMap<String, Double> sortByValue(HashMap<String, Double> hm)
     {
@@ -67,7 +94,7 @@ public class BestModel {
     public double calcLaplace(String sequence){
         MarkovModel m1 = getModel1();
         MarkovModel m2 = getModel2();
-
+        PriorityQueue<DiffModel> pq = new PriorityQueue<DiffModel>();
         TreeMap<String, Double> m1_lapaces = new TreeMap<String, Double>();
         TreeMap<String, Double> m2_lapaces = new TreeMap<String, Double>();
         HashMap<String, Double> diff_laplaces = new HashMap<String, Double>();
@@ -84,7 +111,11 @@ public class BestModel {
             double m2_ll = Math.log(m2.laplace(subText));
             m2_lapaces.put(subText, m2_ll);
 
-            diff_laplaces.put(subText, Math.abs(m1_ll - m2_ll));
+            double difference = Math.abs(m1_ll - m2_ll);
+            diff_laplaces.put(subText, difference);
+            DiffModel dm1 = new DiffModel(subText, m1_ll, m2_ll);
+            pq.add(dm1);
+
             if(m1_ll - m2_ll > 0){
                 positive_negative.put(subText, "+");
             }else{
@@ -103,10 +134,20 @@ public class BestModel {
         System.out.println();
         Map<String, Double> hm1 = sortByValue(diff_laplaces);
         int i = 1;
-        for(String key : hm1.keySet()){
-            if(i > 10){ break;}
-            System.out.printf("\"%s\"\t %.3f %.3f %s%.3f\n", key, m1_lapaces.get(key), m2_lapaces.get(key), positive_negative.get(key) ,diff_laplaces.get(key));
-            i++;
+        // for(String key : hm1.keySet()){
+        //     if(i > 10){ break;}
+        //     System.out.printf("\"%s\"\t %.3f %.3f %s%.3f\n", key, m1_lapaces.get(key), m2_lapaces.get(key), positive_negative.get(key) ,diff_laplaces.get(key));
+        //     i++;
+        // }
+
+        for(i = 0; i<10; i++){
+            DiffModel dm = pq.poll();
+            String key = dm.subString;
+            double m1_ll = dm.liklihood1;
+            double m2_ll = dm.liklihood2;
+            double diff = dm.diff;
+
+            System.out.printf("\"%s\"\t %.3f %.3f %s%.3f\n", key, m1_ll, m2_ll, positive_negative.get(key) ,diff);
         }
 
         return (1.0);

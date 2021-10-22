@@ -1,173 +1,117 @@
 package pa1;
 
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
-import java.util.TreeMap;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-
-import edu.princeton.cs.algs4.ST;
+import edu.princeton.cs.algs4.In;
 
 
-public class MarkovModel {
+import java.util.PriorityQueue;
+
+
+public class BestModel {
+    private MarkovModel m1;
+    private MarkovModel m2;
     private int k;
-    private String s;
-    private TreeMap<String, Integer> st;
-    private ST<String, Integer> alphabet;
-    private int S;
 
-    public MarkovModel(int k, String s){
-        this.k = k;
-        this.s = s;
-        this.st = new TreeMap<String, Integer>();
-        this.alphabet = new ST<String, Integer>();
-        this.S = 0;
+    private class DiffModel implements Comparable<DiffModel> {
+        private String subString;
+        private double liklihood1;
+        private double liklihood2;
+        private double diff;
+        private String posORneg;
 
-        model(this.s, this.k);
-    }
-
-    public static String subString(String s, int index, int goal){
-        int length = s.length();
-
-        if(goal >= length){
-            int difference = goal - length;
-            String sub = s.substring(index, length);
-            String sub2 = s.substring(0, difference);
-            String joinedString = sub + sub2;
-            return joinedString;
+        public DiffModel(String subString, double likelihood1, double likelihood2) {
+            this.subString = subString;
+            this.liklihood1 = likelihood1;
+            this.liklihood2 = likelihood2;
+            this.diff = likelihood1 - likelihood2;
+            this.posORneg = this.diff > 0 ? "+" : "-";
+            this.diff = Math.abs(diff);
         }
-        return s.substring(index, goal);
+
+        @Override
+        public int compareTo(DiffModel other) {
+            return Double.compare(other.diff, this.diff);
+        }
+
     }
 
-    public void model(String s, int k){
-        int length = s.length();
+    public BestModel(int k, String file1, String file2) {
+        this.k = k;
+
+        In in = new In(file1);
+        String s1 = in.readAll().replace("\\s", " ");
+        in = new In(file2);
+        String s2 = in.readAll().replace("\\s", " ");
+
+        this.m1 = new MarkovModel(k, s1);
+        this.m2 = new MarkovModel(k, s2);
+
+    }
+
+    public MarkovModel getModel1() {
+        return this.m1;
+    }
+
+    public MarkovModel getModel2() {
+        return this.m2;
+    }
+
+    public double classifySequence(String sequence, String filename) {
+        MarkovModel m1 = getModel1();
+        MarkovModel m2 = getModel2();
+        PriorityQueue<DiffModel> pq = new PriorityQueue<DiffModel>();
+
+        System.out.print(filename);
+        System.out.print("\t");
+
         int index = 0;
-        while(index < length){
-            // String subbedText = s.substring(index, index + this.k);
-            // for(int i=this.k+1; i>=2 ;i--){
-                String subText = MarkovModel.subString(s, index, index + k);
-                String subText2 = MarkovModel.subString(s, index, index + k + 1);
-                addKey(subText);
-                addKey(subText2);
-                addAlphabet(s.substring(index, index+1));
-            // }
-            // String subText = this.subString(s, index, index + this.k);
-            // addKey(subText);
+        int length = sequence.length();
+        double m1Avg = 0;
+        double m2Avg = 0;
+        while (index < length) {
+            String subText = MarkovModel.subString(sequence, index, index + this.k + 1).replaceAll("\\s", " ");
+            double m1_ll = Math.log(m1.laplace(subText));
+            double m2_ll = Math.log(m2.laplace(subText));
+
+            DiffModel dm = new DiffModel(subText, m1_ll, m2_ll);
+            pq.add(dm);
+
+            m1Avg += m1_ll;
+            m2Avg += m2_ll;
             index++;
         }
-        this.S = alphabet.size();
-        // if(length/this.k != 0){
-        //     String returnString = stringCircle(s, this.k);
-        //     // System.out.println(returnString+ "WO");
-        //     addKey(returnString);
-        // }
-    }
+        m1Avg /= index;
+        m2Avg /= index;
 
-    // public String stringCircle(String str, int totalLetters){
-    //     int length = str.length();
-    //     char lastCharacter = s.charAt(length-1);
-    //     String circle = s.substring(0, totalLetters-1);
-    //     String returnString = lastCharacter+circle;
-    //     return returnString;
-    // }
+        System.out.print(m1Avg + "\t" + m2Avg + "\t" + (m1Avg - m2Avg));
 
+        System.out.println();
 
-    public void addKey(String key){
-        if(st.get(key) == null){
-            st.put(key, 1);
-        }else{
-            st.put(key, st.get(key) + 1);
+        for (int i = 0; i < 10; i++) {
+            DiffModel dm = pq.poll();
+            String key = dm.subString;
+            double m1_ll = dm.liklihood1;
+            double m2_ll = dm.liklihood2;
+            double diff = dm.diff;
+
+            System.out.printf("\"%s\"\t %.3f %.3f %s%.3f\n", key, m1_ll, m2_ll, dm.posORneg, diff);
         }
+        pq.clear();
+
+        return (1.0);
     }
 
-    public void addAlphabet(String key){
-        if(alphabet.get(key) == null){
-            alphabet.put(key, 1);
-        }else{
-            alphabet.put(key, alphabet.get(key) + 1);
-        }
-    }
-
-    public double laplace(String s){
-        int S = getS();
-        int NP = 0;
-        String sub = s.substring(0, s.length() - 1);
-        int NPC = 0;
-        
-        if(st.get(sub) != null){
-            NP = st.get(sub);
-        }
-        if(st.get(s) != null){
-            NPC = st.get(s);
-        }
-
-        double num = (NPC + 1);
-        double den = (NP + S);
-        double d = num/den;
-
-        return d;
-    }
-
-    // The order of the model
-    public int getK(){
-        return this.k;
-    }
-
-    // returns size of alphabet
-    public int getS(){
-        return this.S;
-    }
-    
-    public TreeMap<String, Integer> getST(){
-        return this.st;
-    }
-
-    public String toString(){
-        ArrayList<String> list_k = new ArrayList<String>();
-        ArrayList<String> list_k_1 = new ArrayList<String>();
-        String str = "S = "+getS();
-        for(String key : st.keySet()){
-            if(key.length() == this.k){
-                list_k.add(key);
-            }else{
-                list_k_1.add(key);
-            }
-        }
-        Collections.sort(list_k);
-        Collections.sort(list_k_1);
-        for(String key : list_k){
-            str += "\n\""+key+"\"\t" + st.get(key);
-        }
-        for(String key : list_k_1){
-            str += "\n\""+key+"\"\t" + st.get(key);
-        }
-        // str += "\n\""+key+"\"\t" + st.get(key);
-        return str;
-    }
-
-    public static void main(String[] args){
+    public static void main(String[] args) {
         int k = Integer.parseInt(args[0]);
-        String s = "";
-        try{
-            File file = new File(args[1]);
-            Scanner scanner = new Scanner(file);
-            while(scanner.hasNext()){
-                String line = scanner.nextLine();
-                s += line;
-            }
-            scanner.close();
-            s.replaceAll("\\s"," ");
-            MarkovModel model = new MarkovModel(k, s);
-            System.out.println(model);
-            System.out.printf("%.4f\n", model.laplace("aac"));
-            System.out.printf("%.4f\n", model.laplace("aaa"));
-            System.out.printf("%.4f\n", model.laplace("aab"));
-        }catch(FileNotFoundException e){
-            System.out.println(e);
-        }
+        BestModel model = new BestModel(k, args[1], args[2]);
 
+        for (int i = 3; i < args.length; i++) {
+
+            String element = args[i];
+            In seq = new In(element);
+            String lines = seq.readAll();
+
+            model.classifySequence(lines, element);
+            System.out.println();
+        }
     }
 }

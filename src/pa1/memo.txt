@@ -1,7 +1,8 @@
-1. My MarkovModel class will take O(N) time to complete.
-This is because I have to loop through all the data that
-is provided to add it to a TreeMap. Put in TreeMaps are O(LogN)
-however since N is larger it is the dominant one.
+1. 
+    My MarkovModel class will take O(N) time to complete.
+    This is because I have to loop through all the data that
+    is provided to add it to a TreeMap. Put in TreeMaps are O(LogN)
+    however since N is larger it is the dominant one.
 
 2. 
     In BestModel the time complexity is O(N) because the most dominant loop 
@@ -53,52 +54,51 @@ however since N is larger it is the dominant one.
     bush3-00.txt    -2.193053347325643      -2.2680664325711843     0.07501308524554151
     "spr"    -2.715 -4.963 +2.247
     "eek"    -5.617 -3.457 -2.160
+    "eek"    -5.617 -3.457 -2.160
     "ari"    -6.011 -3.901 -2.110
+    "siv"    -3.843 -5.900 +2.057
+    "siv"    -3.843 -5.900 +2.057
     "siv"    -3.843 -5.900 +2.057
     "ban"    -2.338 -4.174 +1.836
     "sig"    -2.744 -4.514 +1.769
     "fea"    -2.645 -4.401 +1.756
-    "edo"    -3.379 -5.112 +1.733
-    "ida"    -2.809 -4.468 +1.659
-    "My "    -1.376 -2.983 +1.607
 
     bush3-01.txt    -2.2071395768504147     -2.210294140094081      0.003154563243666253
     "Of "    -2.351 -4.331 +1.979
     "My "    -1.376 -2.983 +1.607
+    "sal"    -4.956 -3.418 -1.538
     "sal"    -4.956 -3.418 -1.538
     "nen"    -2.275 -3.703 +1.428
     " My"    -2.630 -4.043 +1.413
     " Of"    -3.168 -4.564 +1.397
     "k I"    -5.380 -4.003 -1.377
     "dis"    -1.946 -3.292 +1.346
-    "cem"    -3.683 -4.990 +1.308
-    "rri"    -2.454 -3.730 +1.276
+    "dis"    -1.946 -3.292 +1.346
 
 
 6.
     jdboy08@DESKTOP-FGHTBTM:/mnt/f/Downloads/CS310$ ./go.sh 2 obama1+2.txt mccain1+2.txt obama3-00.txt mccain3-02.txt
     obama3-00.txt   -2.066059810163468      -2.1716355520324178     0.1055757418689498
     "r M"    -2.228 -5.416 +3.188
+    "r M"    -2.228 -5.416 +3.188
+    "r M"    -2.228 -5.416 +3.188
+    "r M"    -2.228 -5.416 +3.188
+    "r M"    -2.228 -5.416 +3.188
     " Mc"    -0.803 -3.664 +2.861
-    "Cai"    -0.643 -3.283 +2.641
-    "cCa"    -0.643 -3.232 +2.590
-    "McC"    -0.649 -3.232 +2.583
-    "Num"    -2.315 -4.369 +2.054
-    "wne"    -2.629 -4.615 +1.986
-    "ocu"    -2.833 -4.727 +1.894
-    "k y"    -4.056 -2.192 -1.864
-    "ego"    -4.804 -2.967 -1.837
+    " Mc"    -0.803 -3.664 +2.861
+    " Mc"    -0.803 -3.664 +2.861
+    " Mc"    -0.803 -3.664 +2.861
+    " Mc"    -0.803 -3.664 +2.861
 
     mccain3-02.txt  -2.1663612205288865     -2.1210704408407444     -0.0452907796881421
     "r O"    -6.635 -2.145 -4.489
+    "r O"    -6.635 -2.145 -4.489
+    "bam"    -4.898 -1.103 -3.795
     "bam"    -4.898 -1.103 -3.795
     "Oba"    -4.331 -0.668 -3.663
+    "Oba"    -4.331 -0.668 -3.663
+    "ma "    -4.568 -1.673 -2.895
     "ma "    -4.568 -1.673 -2.895
     " Ob"    -3.401 -0.749 -2.653
-    "lks"    -1.930 -4.500 +2.570
-    "ama"    -3.509 -1.058 -2.451
-    " 10"    -2.140 -4.394 +2.254
-    ". J"    -4.945 -6.805 +1.859
-    "upl"    -3.318 -4.977 +1.659
-
+    " Ob"    -3.401 -0.749 -2.653
 7.

@@ -1,10 +1,7 @@
 package pa2;
 
-import java.util.ArrayList;
-
 import edu.princeton.cs.algs4.BreadthFirstPaths;
 import edu.princeton.cs.algs4.Stack;
-import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.SymbolGraph;
 
@@ -38,61 +35,36 @@ public class DegreesOfSeparationBFS {
             StdOut.println("No path between " + sg.nameOf(src) + " and " + sg.nameOf(dst));
             return -1;
         }
+        Stack<Integer> stack = graphPath(destination);
 
-        int dist = 0;
-        Stack<Integer> stack = new Stack<Integer>();
-        for (int v : bfs.pathTo(dst)) {
-            stack.push(v);
-        }
-
-
-        while (!stack.isEmpty()) {
-            int v = stack.pop();
-            if(v == dst){
-
-            }
-            dist++;
-        }
-
-
-        return dist/2;
+        return stack.size() / 2;
     }
 
     public void printHistogram() {
 
-       // compute histogram of Kevin Bacon numbers - 100 for infinity
-       int MAX_BACON = 100;
-       int[] hist = new int[MAX_BACON + 1];
-       for (int v = 0; v < sg.graph().V(); v++) {
-           int bacon = Math.min(MAX_BACON, bfs.distTo(v));
-           hist[bacon]++;
-       }
+        // compute histogram of Kevin Bacon numbers - 100 for infinity
+        int MAX_BACON = 100;
+        int[] hist = new int[MAX_BACON + 1];
+        for (int v = 0; v < sg.graph().V(); v++) {
+            int bacon = Math.min(MAX_BACON, bfs.distTo(v));
+            hist[bacon]++;
+        }
 
-       // print out histogram - even indices are actors
-       for (int i = 0; i < MAX_BACON; i += 2) {
-           if (hist[i] == 0) break;
-           StdOut.printf("%3d %8d\n", i/2, hist[i]);
-       }
-       StdOut.printf("Inf %8d\n", hist[MAX_BACON]);
+        // print out histogram - even indices are actors
+        for (int i = 0; i < MAX_BACON; i += 2) {
+            if (hist[i] == 0)
+                break;
+            StdOut.printf("%3d %8d\n", i / 2, hist[i]);
+        }
+        StdOut.printf("Inf %8d\n", hist[MAX_BACON]);
     }
 
-    public Stack<Integer> graphPath(String sink){
-        int dist = 0;
+    public Stack<Integer> graphPath(String sink) {
         int dst = sg.indexOf(sink);
         Stack<Integer> stack = new Stack<Integer>();
         for (int v : bfs.pathTo(dst)) {
             stack.push(v);
         }
-
-
-        // while (!stack.isEmpty()) {
-        //     int v = stack.pop();
-        //     if(v == dst){
-
-        //     }
-        //     dist++;
-        // }
-
         return stack;
     }
 
@@ -103,7 +75,7 @@ public class DegreesOfSeparationBFS {
     public BreadthFirstPaths getBreadthFirstPaths() {
         return bfs;
     }
-        
+
     public static void main(String[] args) {
         String filename = args[0];
         String delimiter = args[1];

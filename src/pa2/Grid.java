@@ -79,13 +79,13 @@ public class Grid {
 
         // loop through g
         for (int i = 0; i < allGroups.size(); i++) {
-            System.out.println(allGroups.get(i));
+            // System.out.println(allGroups.get(i));
             Set<Spot> s = allGroups.get(i);
             // loop through s
             for (Spot spot : s) {
                 spot.setGroup(i+1);
-                int h = spot.getI();
-                int k = spot.getJ();
+                // int h = spot.getI();
+                // int k = spot.getJ();
             }
         }
         return allGroups;
